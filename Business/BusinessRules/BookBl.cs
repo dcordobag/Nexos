@@ -30,13 +30,13 @@ namespace BusinessRules.BusinessRules
         {
             return BusinessRulesAudit.ExceptionBehavior(() =>
              {
-                 response = ValidateMax(data);
+                 response = ValidateEditorial(data);
                  return response;
              });
         }
 
         #region Validations
-        protected Response ValidateMax(BookEntity data)
+        protected Response ValidateEditorial(BookEntity data)
         {
             if (BookControl.EditorialExists(data.EditorialID, editorialBl))
             {
@@ -52,7 +52,7 @@ namespace BusinessRules.BusinessRules
         {
             if (BookControl.AuthorExists(data.AuthorID, authorBl))
             {
-                return ValidateEditorial(data);
+                return ValidateMax(data);
             }
             return new Response
             {
@@ -60,9 +60,10 @@ namespace BusinessRules.BusinessRules
                 Message = "El autor no está registrado."
             };
         }
-        protected Response ValidateEditorial(BookEntity data)
+        protected Response ValidateMax(BookEntity data)
         {
-            if ((GetListBooks().Data as List<Book>).Count < BookControl.MaxBookByEditorial(data.EditorialID, editorialBl))
+            if ((GetListBooksFiltered(b => b.EditorialID == data.EditorialID).Data as List<Book>).Count <
+                BookControl.MaxBookByEditorial(data.EditorialID, editorialBl))
             {
                 return new Response
                 {
