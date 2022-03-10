@@ -27,6 +27,16 @@ namespace ApiNexos
             services.AddTransient<IAuthorDao, AuthorDao>();
             services.AddDbContext<ConnectionContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("NexosConnection")));
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+            });
 
         }
 
@@ -43,7 +53,7 @@ namespace ApiNexos
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("AllowOrigin");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

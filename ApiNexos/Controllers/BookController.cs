@@ -21,9 +21,9 @@
         }
 
         [HttpGet("GetBookByAuthor")]
-        public Response GetBookByAuthor(int autorId)
+        public Response GetBookByAuthor(string authorName)
         {
-            return GetListBooksFiltered(b => b.Author.ID == autorId);
+            return GetListBooksFiltered(b => b.Author.FullName == authorName);
         }
 
         [HttpGet("GetBookByTitle")]

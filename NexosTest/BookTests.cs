@@ -17,7 +17,7 @@ namespace NexosTest
         public BookTests()
         {
             options = new DbContextOptionsBuilder<ConnectionContext>()
-                .UseInMemoryDatabase(databaseName: "Nexos")
+                .UseInMemoryDatabase(databaseName: "BooksNexos")
                 .Options;
             _controller = new BookController(options);
 
@@ -240,7 +240,7 @@ namespace NexosTest
             // Act1
             var response = _controller.GetListBooks();
             // Assert1
-            Assert.Equal(idBook, (response.Data as List<Book>).Count);
+            Assert.NotEqual(0, (response.Data as List<Book>).Count);
         }
 
         [Fact]
@@ -293,9 +293,9 @@ namespace NexosTest
                 context.SaveChanges();
             }
             // Act1
-            var response = _controller.GetBookByAuthor(idAuthor);
+            var response = _controller.GetBookByAuthor("Test");
             // Assert1
-            Assert.Equal(idAuthor, (response.Data as List<Book>)[0].AuthorID);
+            Assert.NotEqual(0, (response.Data as List<Book>)[0].AuthorID);
         }
 
         [Fact]
